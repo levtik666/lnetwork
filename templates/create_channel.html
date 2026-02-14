@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="text-lg font-semibold mb-4">Создать канал</h2>
+<form method="POST" class="flex flex-col gap-3 max-w-md">
+    <input type="text" name="name" placeholder="Название канала" required
+           class="border border-gray-400 p-2 rounded-sm">
+    <textarea name="description" placeholder="Описание канала" required
+              class="border border-gray-400 p-2 rounded-sm"></textarea>
+    <button class="bg-gray-800 text-white px-4 py-2 rounded-sm hover:bg-gray-700">Создать</button>
+</form>
+{% endblock %}

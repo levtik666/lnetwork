@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-semibold">Каналы</h2>
+    {% if "user_id" in session %}
+        <a href="{{ url_for('create_channel') }}" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-white">Создать</a>
+    {% endif %}
+</div>
+
+<!-- Поиск -->
+<form method="GET" action="{{ url_for('channels') }}" class="mb-6 flex gap-2">
+    <input type="text" name="q" placeholder="Поиск..." value="{{ request.args.get('q','') }}"
+           class="flex-1 p-2 rounded-lg bg-gray-900 text-white border border-gray-700">
+    <button class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg text-white">Поиск</button>
+</form>
+
+<div class="flex flex-col gap-3">
+    {% for channel in channels_list %}
+    <div class="flex justify-between items-center bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-lg transition">
+        <div class="flex items-center gap-3">
+            {% if channel[4] %}
+                <img src="{{ url_for('static', filename='uploads/' + channel[4]) }}" class="w-12 h-12 rounded-lg object-cover">
+            {% else %}
+                <div class="w-12 h-12 bg-gray-800 flex items-center justify-center rounded-lg text-gray-400 text-xs">К</div>
+            {% endif %}
+            <div class="flex flex-col">
+                <a href="{{ url_for('channel_view', channel_id=channel[0]) }}" class="text-white font-medium hover:underline text-sm">{{ channel[1] }}</a>
+                <span class="text-xs text-gray-500">{{ channel[2] }}</span>
+                <span class="text-xs text-gray-500 mt-1">Подписчиков: {{ channel[5] }}</span>
+            </div>
+        </div>
+        {% if "user_id" in session and session["user_id"] != channel[3] %}
+            {% if channel[6] %}
+            <a href="{{ url_for('unsubscribe', channel_id=channel[0]) }}" class="px-3 py-1 bg-red-700 hover:bg-red-600 rounded-lg text-white text-sm">Отписаться</a>
+            {% else %}
+            <a href="{{ url_for('subscribe', channel_id=channel[0]) }}" class="px-3 py-1 bg-blue-700 hover:bg-blue-600 rounded-lg text-white text-sm">Подписаться</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="text-gray-500">Каналов не найдено.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

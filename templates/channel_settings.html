@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-2xl font-semibold mb-4">Настройки канала</h2>
+
+<div class="bg-white border border-gray-300 p-6 rounded-sm shadow-sm w-full max-w-lg">
+    <form method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+        <!-- Аватар канала -->
+        <div>
+            <label class="font-medium text-sm mb-1 block">Аватар канала</label>
+            {% if channel[4] %}
+                <img src="{{ url_for('static', filename='uploads/' + channel[4]) }}"
+                     class="w-24 h-24 object-cover rounded-full mb-2">
+            {% else %}
+                <div class="w-24 h-24 bg-gray-300 flex items-center justify-center rounded-full text-xs text-gray-600 mb-2">
+                    Нет
+                </div>
+            {% endif %}
+            <input type="file" name="avatar" class="border border-gray-400 p-2 rounded-sm w-full">
+        </div>
+
+        <!-- Название -->
+        <div>
+            <label class="font-medium text-sm mb-1 block">Название канала</label>
+            <input type="text" name="name" value="{{ channel[1] }}"
+                   class="border border-gray-400 p-2 rounded-sm w-full" required>
+        </div>
+
+        <!-- Описание -->
+        <div>
+            <label class="font-medium text-sm mb-1 block">Описание</label>
+            <textarea name="description" class="border border-gray-400 p-2 rounded-sm w-full" rows="4">{{ channel[2] }}</textarea>
+        </div>
+
+        <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-sm hover:bg-gray-700">
+            Сохранить
+        </button>
+    </form>
+</div>
+
+{% endblock %}

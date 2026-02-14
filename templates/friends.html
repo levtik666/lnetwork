@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-lg font-semibold mb-4">Мои друзья</h2>
+
+{% if my_friends %}
+<div class="flex flex-col gap-3 mb-6">
+    {% for friend in my_friends %}
+    <div class="flex items-center justify-between bg-white border border-gray-300 p-3 rounded-sm shadow-sm hover:shadow-md transition">
+        <div class="flex items-center gap-3">
+            {% if friend[2] %}
+                <img src="{{ url_for('static', filename='uploads/' + friend[2]) }}"
+                     class="w-12 h-12 object-cover rounded-full">
+            {% else %}
+                <div class="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full text-xs text-gray-600">
+                    Нет
+                </div>
+            {% endif %}
+            <a href="{{ url_for('profile_view', user_id=friend[0]) }}" class="font-medium text-sm hover:underline">
+                {{ friend[1] }}
+            </a>
+        </div>
+        <a href="{{ url_for('remove_friend', friend_id=friend[0]) }}"
+           class="bg-red-600 text-white px-3 py-1 text-sm rounded-sm hover:bg-red-500">
+           Убрать
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-gray-600 mb-6">Вы пока никого не добавили.</p>
+{% endif %}
+
+<h2 class="text-lg font-semibold mb-4">Добавили меня</h2>
+
+{% if added_me %}
+<div class="flex flex-col gap-3">
+    {% for friend in added_me %}
+    <div class="flex items-center justify-between bg-white border border-gray-300 p-3 rounded-sm shadow-sm hover:shadow-md transition">
+        <div class="flex items-center gap-3">
+            {% if friend[2] %}
+                <img src="{{ url_for('static', filename='uploads/' + friend[2]) }}"
+                     class="w-12 h-12 object-cover rounded-full">
+            {% else %}
+                <div class="w-12 h-12 bg-gray-300 flex items-center justify-center rounded-full text-xs text-gray-600">
+                    Нет
+                </div>
+            {% endif %}
+            <a href="{{ url_for('profile_view', user_id=friend[0]) }}" class="font-medium text-sm hover:underline">
+                {{ friend[1] }}
+            </a>
+        </div>
+        <a href="{{ url_for('add_friend', friend_id=friend[0]) }}"
+           class="bg-blue-600 text-white px-3 py-1 text-sm rounded-sm hover:bg-blue-500">
+           Добавить
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-gray-600">Никто вас пока не добавил.</p>
+{% endif %}
+
+{% endblock %}

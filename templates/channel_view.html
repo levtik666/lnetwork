@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="flex flex-col gap-4">
+
+    <!-- Header канала -->
+    <div class="flex flex-col md:flex-row items-center gap-4 bg-gray-900 p-4 rounded-lg shadow-md">
+        {% if channel[4] %}
+            <img src="{{ url_for('static', filename='uploads/' + channel[4]) }}" class="w-24 h-24 object-cover rounded-lg">
+        {% else %}
+            <div class="w-24 h-24 bg-gray-800 flex items-center justify-center rounded-lg text-gray-400 text-sm">Нет</div>
+        {% endif %}
+
+        <div class="flex-1 flex flex-col gap-1">
+            <h2 class="text-xl font-semibold">{{ channel[1] }}</h2>
+            <p class="text-gray-400 text-sm">{{ channel[2] }}</p>
+            <span class="text-xs text-gray-500">Подписчиков: {{ subscribers_count }}</span>
+        </div>
+
+        {% if "user_id" in session and session["user_id"] != channel[3] %}
+            {% if is_subscribed %}
+                <a href="{{ url_for('unsubscribe', channel_id=channel[0]) }}" class="ml-auto px-4 py-2 bg-red-700 hover:bg-red-600 rounded-lg text-white text-sm">Отписаться</a>
+            {% else %}
+                <a href="{{ url_for('subscribe', channel_id=channel[0]) }}" class="ml-auto px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-lg text-white text-sm">Подписаться</a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <!-- Форма для админа -->
+    {% if "user_id" in session and session["user_id"] == channel[3] %}
+    <form method="POST" action="{{ url_for('channel_post', channel_id=channel[0]) }}" class="flex flex-col gap-2 bg-gray-900 p-4 rounded-lg shadow-md">
+        <textarea name="content" placeholder="Напишите пост..." required class="w-full p-2 rounded-lg bg-black text-white border border-gray-700"></textarea>
+        <button class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg">Опубликовать</button>
+    </form>
+    {% endif %}
+
+    <!-- Посты канала -->
+    <div class="flex flex-col gap-3">
+        {% for post in posts %}
+        <div class="flex justify-between items-center bg-gray-900 p-3 rounded-lg shadow-sm hover:shadow-md transition">
+            <div class="flex items-center gap-3">
+                {% if post[4] %}
+                    <img src="{{ url_for('static', filename='uploads/' + post[4]) }}" class="w-12 h-12 rounded-lg object-cover">
+                {% else %}
+                    <div class="w-12 h-12 bg-gray-800 flex items-center justify-center rounded-lg text-gray-400 text-xs">Нет</div>
+                {% endif %}
+                <div class="flex flex-col">
+                    <span class="font-medium text-white text-sm">{{ post[3] }}</span>
+                    <span class="text-xs text-gray-500">{{ post[2] }}</span>
+                </div>
+            </div>
+            {% if "user_id" in session %}
+            <a href="{{ url_for('like_channel_post', post_id=post[0]) }}" class="px-3 py-1 bg-blue-700 hover:bg-blue-600 text-white rounded-lg text-sm">👍 {{ post[5] }}</a>
+            {% else %}
+            <span class="text-gray-500 text-sm">👍 {{ post[5] }}</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="text-gray-500">Постов пока нет.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

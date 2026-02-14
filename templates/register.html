@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-white border border-gray-400 p-6 max-w-md mx-auto">
+    <h2 class="text-lg font-semibold mb-4">Регистрация</h2>
+
+    <form method="POST" class="space-y-4">
+
+        <div>
+            <label class="text-sm">Логин</label>
+            <input type="text"
+                   name="username"
+                   required
+                   class="w-full border border-gray-400 p-2 text-sm">
+        </div>
+
+        <div>
+            <label class="text-sm">Пароль</label>
+            <input type="password"
+                   name="password"
+                   required
+                   class="w-full border border-gray-400 p-2 text-sm">
+        </div>
+
+        <button class="w-full bg-gray-800 text-white p-2 text-sm hover:bg-gray-700">
+            Зарегистрироваться
+        </button>
+
+    </form>
+
+    <p class="text-sm mt-4">
+        Уже есть аккаунт?
+        <a href="/login" class="text-gray-700 underline">Войти</a>
+    </p>
+</div>
+
+{% endblock %}

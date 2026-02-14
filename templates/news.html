@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="bg-white border border-gray-400 p-4 mb-4">
+    <form method="POST" action="/create_post">
+        <textarea name="content" class="w-full border border-gray-400 p-2 text-sm" placeholder="Что нового?" required></textarea>
+        <button class="mt-2 bg-gray-800 text-white px-4 py-1 text-sm hover:bg-gray-700">Опубликовать</button>
+    </form>
+</div>
+
+{% for post in posts %}
+<div class="bg-white border border-gray-400 p-4 mb-3">
+    <div class="flex justify-between items-center">
+        <span class="font-semibold text-sm">
+            <a href="{{ url_for('profile_view', user_id=post[4]) }}" class="text-blue-600 hover:underline">{{ post[3] }}</a>
+        </span>
+        <span class="text-xs text-gray-500">{{ post[2] }}</span>
+    </div>
+    <p class="mt-2 text-sm">{{ post[1] }}</p>
+
+    <!-- Лайк -->
+    <div class="mt-2">
+        <a href="/like/{{ post[0] }}" class="text-blue-600 text-sm hover:underline">
+            👍 Лайк ({{ post[5] }})
+        </a>
+    </div>
+</div>
+{% else %}
+<p class="text-gray-600 text-sm">Постов пока нет.</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LNetwork{% endblock %}</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Кастомный CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- Header -->
+<header class="p-4 flex justify-between items-center">
+    <div class="text-xl font-bold flex items-center gap-2 text-white">
+        LNetwork
+    </div>
+    <nav class="flex gap-4 text-gray-300 text-sm">
+        <a href="/" class="hover:text-white">Главная</a>
+        <a href="/news" class="hover:text-white">Лента</a>
+        <a href="/channels" class="hover:text-white">Каналы</a>
+        {% if session.get('user_id') %}
+            <a href="/profile" class="hover:text-white">Профиль</a>
+            <a href="/logout" class="hover:text-white">Выйти</a>
+        {% else %}
+            <a href="/login" class="hover:text-white">Войти</a>
+            <a href="/register" class="hover:text-white">Регистрация</a>
+        {% endif %}
+    </nav>
+</header>
+
+<!-- Основной контент -->
+<main class="p-6 flex justify-center">
+    <div class="w-full max-w-[1100px]">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+
+</body>
+</html>
